@@ -32,7 +32,7 @@ def preprocess_image(uploaded_file):
 st.set_page_config(page_title="Klasifikasi Anjing vs Kucing", page_icon="🐾", layout="centered")
 
 st.title("🐶🐱 Klasifikasi Anjing vs Kucing")
-st.write("Upload gambar hewanmu, lalu biarkan model memprediksi hasilnya.")
+st.write("Upload gambar hewanmu")
 
 uploaded_file = st.file_uploader("📤 Upload gambar", type=["jpg", "jpeg", "png"])
 
