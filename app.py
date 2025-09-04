@@ -53,9 +53,9 @@ st.sidebar.header("📤 Upload Gambar")
 uploaded_file = st.sidebar.file_uploader("Pilih gambar:", type=["jpg","jpeg","png"])
 
 if uploaded_file is not None:
-    # Tampilkan gambar di sidebar
-    st.sidebar.image(uploaded_file, caption="Gambar yang diupload", use_column_width=True)
-    
+    # Tampilkan gambar di halaman utama
+    st.image(uploaded_file, caption="Gambar yang diupload", use_column_width=True)
+
     # Preprocess & prediksi
     img_array = preprocess_image(uploaded_file)
     pred = model.predict(img_array)
@@ -77,8 +77,3 @@ if uploaded_file is not None:
     st.sidebar.write(f"Tingkat keyakinan:")
     st.sidebar.progress(int(confidence))
     st.sidebar.write(f"**{confidence:.2f}%**")
-
-# -----------------------------
-# Halaman utama tetap bersih
-# -----------------------------
-st.write("Halaman utama bisa kamu gunakan untuk informasi tambahan, tutorial, atau gambar referensi tanpa perlu scrolling.")
