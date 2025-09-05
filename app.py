@@ -4,14 +4,8 @@ import numpy as np
 from PIL import Image
 from huggingface_hub import hf_hub_download
 
-# -----------------------------
-# Konfigurasi
-# -----------------------------
 IMG_HEIGHT, IMG_WIDTH = 180, 180
 
-# -----------------------------
-# Load Model
-# -----------------------------
 @st.cache_resource
 def load_model():
     model_path = hf_hub_download(
@@ -23,9 +17,6 @@ def load_model():
 
 model = load_model()
 
-# -----------------------------
-# Preprocessing Gambar
-# -----------------------------
 def preprocess_image(uploaded_file):
     img = Image.open(uploaded_file).convert("RGB")
     img = img.resize((IMG_WIDTH, IMG_HEIGHT))
@@ -34,9 +25,6 @@ def preprocess_image(uploaded_file):
     img_array = np.expand_dims(img_array, axis=0)
     return img_array
 
-# -----------------------------
-# Streamlit Layout
-# -----------------------------
 st.set_page_config(
     page_title="Klasifikasi Anjing vs Kucing",
     page_icon="🐾",
@@ -46,21 +34,16 @@ st.set_page_config(
 st.title("🐶🐱 Klasifikasi Anjing vs Kucing")
 st.write("Upload gambar hewanmu di sidebar, dan model akan memprediksi apakah itu Anjing atau Kucing.")
 
-# -----------------------------
-# Sidebar: Upload & Hasil
-# -----------------------------
 st.sidebar.header("📤 Upload Gambar")
 uploaded_file = st.sidebar.file_uploader("Pilih gambar:", type=["jpg","jpeg","png"])
 
 if uploaded_file is not None:
-    # Tampilkan gambar di halaman utama
+  
     st.image(uploaded_file, caption="Gambar yang diupload", use_column_width=True)
 
-    # Preprocess & prediksi
     img_array = preprocess_image(uploaded_file)
     pred = model.predict(img_array)
     
-    # Tentukan label & confidence
     if pred.shape[1] == 1:
         prob = float(pred[0][0])
         label = "🐱 Kucing" if prob < 0.5 else "🐶 Anjing"
@@ -70,7 +53,6 @@ if uploaded_file is not None:
         label = ["🐱 Kucing", "🐶 Anjing"][np.argmax(score)]
         confidence = 100 * np.max(score)
     
-    # Tampilkan hasil di sidebar
     st.sidebar.markdown("---")
     st.sidebar.subheader("📌 Hasil Prediksi")
     st.sidebar.markdown(f"<h3 style='text-align:center; color:#4CAF50;'>{label}</h3>", unsafe_allow_html=True)
